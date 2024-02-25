@@ -4,9 +4,9 @@ let timer = null;
 let timerBreak = null; // break de los 5 minutos de descanso
 let current = 0;
 
-const bAdd = docuemtn.querySelector("#bAdd");
-const itTask = docuemtn.querySelector("#itTask");
-const form = docuemtn.querySelector("#form");
+const bAdd = document.querySelector("#bAdd");
+const itTask = document.querySelector("#itTask");
+const form = document.querySelector("#form");
 
 //creo una funcion para que se ejecute al accionar el submit
 form.addEventListener("submit", (e) => {
@@ -43,5 +43,19 @@ function renderTasks() {
       
       </div>    
     `;
+  });
+  const tasksContainer = document.querySelector('#tasks');
+  tasksContainer.innerHTML = html.join('');
+
+  const startButton = document.querySelectorAll('.tasks .startButton');
+  startButton.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      if(!timer){
+        const id = button.getAttribute('data-id');     
+
+
+      }
+    });
+
   });
 }
