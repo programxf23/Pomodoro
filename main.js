@@ -2,11 +2,15 @@ const tasks = []; //almaceno en el array cada una de las tareas
 let time = 0; //tiempo que me va a llevar la cuenta regresiva
 let timer = null;
 let timerBreak = null; // break de los 5 minutos de descanso
-let current = 0;
+let current = null;
 
 const bAdd = document.querySelector("#bAdd");
 const itTask = document.querySelector("#itTask");
 const form = document.querySelector("#form");
+const taskName = document.querySelector("#time #taskName");
+
+renderTime();
+renderTasks();
 
 //creo una funcion para que se ejecute al accionar el submit
 form.addEventListener("submit", (e) => {
@@ -64,27 +68,63 @@ function renderTasks() {
 }
 
 function startButtonHandler(id) {
-  time = 25 * 60;
+  time = 5;
   current = id;
   const taskIndex = tasks.findIndex((task) => task.id === id);
-  const taskName = documentq.querySelector("#time #taskName");
   taskName.textContent = tasks[taskIndex].title;
+  renderTime();
 
   timer.setInterval(() => {
     //funcion indefinida, hasta que yo la detenga. En cambio setTimeout se ejecuta despues de un periodo de tiempo
-    timeHandler(id);
+    timerHandler(id);
   }, 1000);
 }
-function timeHandler(id) {
-time--;
-renderTime();
+function timerHandler(id) {
+  time--;
+  renderTime();
+
+  if (time === 0) {
+    clearInterval(timer); //detenemos el setInterval
+    markCompleted(id);
+    timer = null;
+    renderTasks();
+    startBreak();
+  }
+}
+function startBreak() {
+  time = 3;
+  taskName.textContent = "Break";
+  renderTime();
+  timerBreak = setInterval(() => {
+    timerBreakHandler();
+  }, 1000);
 }
 
-function renderTime() {//me permite darle funcion a un numero
-  const timeDiv = document.querySelector('#time #value');
+function timerBreakHandler() {
+  time--;
+  renderTime();
+
+  if (time === 0) {
+    clearInterval(timerBreak); //detenemos el setInterval
+    current = null;
+    timerBreak = null;
+    taskName.textContent = "";
+    renderTasks();
+  }
+}
+
+function renderTime() {
+  //me permite darle funcion a un numero
+  const timeDiv = document.querySelector("#timer #value");
   const minutes = parseInt(time / 60);
   const seconds = parseInt(time % 60);
 
   //le damos el formato:
-  timeDiv.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  timeDiv.textContent = `${minutes < 10 ? "0" : ""}${minutes}:${
+    seconds < 10 ? "0" : ""
+  }${seconds}`;
+}
+function markCompleted(id) {
+  const taskIndex = tasks.findIndex((task) => task.id === id);
+  tasks[taskIndex].completed = true;
 }
