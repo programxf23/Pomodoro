@@ -30,7 +30,7 @@ form.addEventListener("submit", (e) => {
 function createTask(value) {
   const newTask = {
     id: (Math.random() * 100).toString(36).slice(3),
-    task: value,
+    title: value,
     completed: false,
   };
   tasks.unshift(newTask);
@@ -44,10 +44,10 @@ function renderTasks() {
       <div class = "task">
       <div class = "completed">${
         task.completed
-          ? `<span class = "done">Done</span>`
-          : `<button class = "start-button" data-id = "${task.id}">Start</button>`
+          ? `<span class ="done">Done</span>`
+          : `<button class ="start-button" data-id ="${task.id}">Start</button>`
       }</div>
-      <div class = "title">${task.title}</div>
+      <div class="title">${task.title}</div>
       
       </div>    
     `;
@@ -55,8 +55,8 @@ function renderTasks() {
   const tasksContainer = document.querySelector("#tasks");
   tasksContainer.innerHTML = html.join("");
 
-  const startButton = document.querySelectorAll(".tasks .startButton");
-  startButton.forEach((button) => {
+  const startButtons = document.querySelectorAll(".task .start-button");
+  startButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       if (!timer) {
         const id = button.getAttribute("data-id");
@@ -74,7 +74,7 @@ function startButtonHandler(id) {
   taskName.textContent = tasks[taskIndex].title;
   renderTime();
 
-  timer.setInterval(() => {
+  timer = setInterval(() => {
     //funcion indefinida, hasta que yo la detenga. En cambio setTimeout se ejecuta despues de un periodo de tiempo
     timerHandler(id);
   }, 1000);
@@ -115,7 +115,7 @@ function timerBreakHandler() {
 
 function renderTime() {
   //me permite darle funcion a un numero
-  const timeDiv = document.querySelector("#timer #value");
+  const timeDiv = document.querySelector("#time #value");
   const minutes = parseInt(time / 60);
   const seconds = parseInt(time % 60);
 
